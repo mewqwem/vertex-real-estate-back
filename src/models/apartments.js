@@ -9,8 +9,18 @@ const apartmentSchema = new Schema(
       trim: true,
     },
     location: {
-      type: String,
-      required: true,
+      address: {
+        type: String,
+        required: true,
+      },
+      lat: {
+        type: Number,
+        required: true,
+      },
+      lng: {
+        type: Number,
+        required: true,
+      },
     },
     price: {
       type: Number,
