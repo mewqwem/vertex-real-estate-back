@@ -1,13 +1,40 @@
 import { Router } from 'express';
 import {
+  createApartment,
+  deleteApartment,
   getAparmtentById,
   getAparmtents,
+  updateApartment,
 } from '../controllers/apartmentsController.js';
+import { celebrate } from 'celebrate';
+import {
+  apartmentParamSchema,
+  createApartmentSchema,
+  updateApartmentSchema,
+} from '../validations/apartmentValidation.js';
 
 const router = Router();
 
 router.get('/apartments', getAparmtents);
 
-router.get(`/apartments/:apartmentId`, getAparmtentById);
+router.get(
+  '/apartments/:id',
+  celebrate(apartmentParamSchema),
+  getAparmtentById,
+);
+
+router.post('/apartments', celebrate(createApartmentSchema), createApartment);
+
+router.delete(
+  '/apartments/:id',
+  celebrate(apartmentParamSchema),
+  deleteApartment,
+);
+
+router.patch(
+  '/apartments/:id',
+  celebrate(updateApartmentSchema),
+  updateApartment,
+);
 
 export default router;

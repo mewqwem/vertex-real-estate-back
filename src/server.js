@@ -6,6 +6,7 @@ import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import apartmentsRoutes from './routes/apartmentsRoutes.js';
+import { errors } from 'celebrate';
 
 const app = express();
 
@@ -19,12 +20,10 @@ app.use((req, res, next) => {
 });
 
 //! handlers
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Hello World!' });
-});
-
 app.use(apartmentsRoutes);
 app.use(notFoundHandler);
+
+app.use(errors());
 
 app.use(errorHandler);
 
