@@ -10,12 +10,13 @@ import { celebrate } from 'celebrate';
 import {
   apartmentParamSchema,
   createApartmentSchema,
+  getApartmentsSchema,
   updateApartmentSchema,
 } from '../validations/apartmentValidation.js';
 
 const router = Router();
 
-router.get('/apartments', getAparmtents);
+router.get('/apartments', celebrate(getApartmentsSchema), getAparmtents);
 
 router.get(
   '/apartments/:id',

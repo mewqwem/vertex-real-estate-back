@@ -2,19 +2,52 @@ import createHttpError from 'http-errors';
 import { Apartment } from '../models/apartments.js';
 
 export const getAparmtents = async (req, res) => {
-  const { page = 1, perPage = 10, minPrice, maxPrice, rooms, area } = req.query;
+  const {
+    page: pageQuery,
+    perPage: perPageQuery,
+    minPrice,
+    maxPrice,
+    rooms,
+    area,
+    location,
+    dealType,
+    apartmentType,
+  } = req.query;
 
+  const page = Math.max(1, Number(pageQuery) || 1);
+  const perPage = Math.max(1, Number(perPageQuery) || 10);
   const skip = (page - 1) * perPage;
 
   const apartmentsQuery = Apartment.find();
 
-  if (minPrice != null) apartmentsQuery.where('price').gte(minPrice);
-  if (maxPrice != null) apartmentsQuery.where('price').lte(maxPrice);
+  if (minPrice != null) {
+    apartmentsQuery.where('price').gte(Number(minPrice));
+  }
+  if (maxPrice != null) {
+    apartmentsQuery.where('price').lte(Number(maxPrice));
+  }
   if (rooms) {
-    apartmentsQuery.where('rooms').equals(rooms);
+    const roomsNum = Number(rooms);
+    if (roomsNum >= 4) {
+      apartmentsQuery.where('rooms').gte(4);
+    } else {
+      apartmentsQuery.where('rooms').equals(roomsNum);
+    }
   }
   if (area) {
-    apartmentsQuery.where('area').equals(area);
+    apartmentsQuery.where('area').gte(Number(area));
+  }
+  if (location?.trim()) {
+    apartmentsQuery.where('location.address', {
+      $regex: location.trim(),
+      $options: 'i',
+    });
+  }
+  if (dealType) {
+    apartmentsQuery.where('dealType').equals(dealType);
+  }
+  if (apartmentType) {
+    apartmentsQuery.where('apartmentType').equals(apartmentType);
   }
 
   const [totalItems, apartments] = await Promise.all([
@@ -33,12 +66,10 @@ export const getAparmtents = async (req, res) => {
   });
 };
 
-export const getAparmtentById = async (req, res) => {
+export const getAparmtentById = async (req, res, next) => {
   try {
-    const { apartmentId } = req.params;
-    console.log('Searching for ID:', apartmentId);
-
-    const apartment = await Apartment.findById(apartmentId);
+    const { id } = req.params;
+    const apartment = await Apartment.findById(id);
 
     if (!apartment) {
       throw createHttpError(404, 'Apartment not found');
@@ -46,8 +77,7 @@ export const getAparmtentById = async (req, res) => {
 
     res.status(200).json(apartment);
   } catch (error) {
-    console.error('Backend Error:', error.message);
-    res.status(400).json({ message: 'Invalid ID format or Server Error' });
+    next(error);
   }
 };
 

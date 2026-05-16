@@ -1,14 +1,33 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
 
+const apartmentTypeValues = [
+  'apartment',
+  'house',
+  'cottage',
+  'villa',
+  'townhouse',
+  'duplex',
+  'commercial',
+];
+
 export const getApartmentsSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),
-    perPage: Joi.number().integer().min(5).max(20).default(10),
+    perPage: Joi.number().integer().min(1).max(20).default(10),
     minPrice: Joi.number().min(0).optional(),
     maxPrice: Joi.number().min(0).optional(),
     rooms: Joi.number().integer().positive().max(99).optional(),
     area: Joi.number().positive().optional(),
+    location: Joi.string().trim().min(1).optional(),
+    dealType: Joi.string().valid('buy', 'rent').optional(),
+    apartmentType: Joi.string().valid(...apartmentTypeValues).optional(),
+  }).custom((value, helpers) => {
+    const { minPrice, maxPrice } = value;
+    if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
+      return helpers.message('Min price cannot be greater than max price');
+    }
+    return value;
   }),
 };
 

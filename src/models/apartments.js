@@ -67,6 +67,22 @@ const apartmentSchema = new Schema(
       enum: ['Активна', 'Продано', 'Архів'],
       default: 'Активна',
     },
+    dealType: {
+      type: String,
+      enum: ['buy', 'rent'],
+    },
+    apartmentType: {
+      type: String,
+      enum: [
+        'apartment',
+        'house',
+        'cottage',
+        'villa',
+        'townhouse',
+        'duplex',
+        'commercial',
+      ],
+    },
   },
   {
     timestamps: true,
