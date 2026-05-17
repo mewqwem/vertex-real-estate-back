@@ -12,6 +12,8 @@ import { adminJs } from './admin/admin.js';
 
 const app = express();
 
+await adminJs.initialize();
+
 const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
   adminJs,
   {
