@@ -1,22 +1,17 @@
 import AdminJS, { ComponentLoader, ValidationError } from 'adminjs';
 import { Apartment } from '../models/apartments.js';
 import * as AdminJSMongoose from '@adminjs/mongoose';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
   Database: AdminJSMongoose.Database,
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const componentLoader = new ComponentLoader();
 
 const AddressAutocompleteComponent = componentLoader.add(
   'AddressAutocomplete',
-  path.join(__dirname, './components/AddressAutocomplete.jsx'),
+  './components/AddressAutocomplete.jsx',
 );
 
 export const adminJs = new AdminJS({
