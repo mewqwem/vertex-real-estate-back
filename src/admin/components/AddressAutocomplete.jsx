@@ -1,6 +1,6 @@
 // tsx code wrapped in js block as requested (using react jsx for admin interface)
 import React, { useState, useEffect } from 'react';
-import { Box, Label, Input, Button } from '@adminjs/design-system';
+import { Box, Label, Input } from '@adminjs/design-system';
 
 const AddressAutocomplete = (props) => {
   const { property, record, onChange } = props;
