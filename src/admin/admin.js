@@ -21,6 +21,11 @@ const AddressAutocompleteComponent = componentLoader.add(
 
 export const adminJs = new AdminJS({
   componentLoader,
+  rootPath: '/admin',
+
+  bundler: {
+    fileCaching: false,
+  },
   resources: [
     {
       resource: Apartment,
@@ -163,5 +168,4 @@ export const adminJs = new AdminJS({
       },
     },
   ],
-  rootPath: '/admin',
 });
