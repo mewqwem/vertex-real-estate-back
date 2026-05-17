@@ -34,7 +34,9 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
   },
 );
 
-await adminJs.initialize();
+if (process.env.NODE_ENV !== 'production') {
+  await adminJs.initialize();
+}
 
 app.use(adminJs.options.rootPath, adminRouter);
 

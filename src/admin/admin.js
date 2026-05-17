@@ -24,6 +24,9 @@ const AddressAutocompleteComponent = componentLoader.add(
 export const adminJs = new AdminJS({
   componentLoader,
   rootPath: '/admin',
+  env: {
+    NODE_ENV: process.env.NODE_ENV || 'development',
+  },
   resources: [
     {
       resource: Apartment,
