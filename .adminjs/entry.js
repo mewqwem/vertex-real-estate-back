@@ -1,3 +1,3 @@
-AdminJS.UserComponents = {}
-import AddressAutocomplete from '../src/admin/components/AddressAutocomplete'
-AdminJS.UserComponents.AddressAutocomplete = AddressAutocomplete
+AdminJS.UserComponents = {};
+import AddressAutocomplete from '../src/admin/components/AddressAutocomplete.js';
+AdminJS.UserComponents.AddressAutocomplete = AddressAutocomplete;

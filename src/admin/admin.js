@@ -23,9 +23,6 @@ const AddressAutocompleteComponent = componentLoader.add(
 export const adminJs = new AdminJS({
   componentLoader,
   rootPath: '/admin',
-  /* REMOVED: bundler: { fileCaching: false } is gone.
-     Now AdminJS will natively check if the bundle exists and reuse it without re-writing.
-  */
   resources: [
     {
       resource: Apartment,
@@ -46,7 +43,6 @@ export const adminJs = new AdminJS({
           'status',
           'rooms',
         ],
-
         properties: {
           description: { type: 'richtext' },
           features: {
@@ -90,7 +86,6 @@ export const adminJs = new AdminJS({
               new: false,
             },
           },
-
           location: {
             components: {
               edit: AddressAutocompleteComponent,
@@ -116,7 +111,6 @@ export const adminJs = new AdminJS({
             },
           },
         },
-
         actions: {
           new: {
             before: async (request) => {

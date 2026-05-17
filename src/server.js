@@ -11,7 +11,10 @@ import AdminJSExpress from '@adminjs/express';
 import { adminJs } from './admin/admin.js';
 
 const app = express();
-await adminJs.initialize();
+
+if (process.env.NODE_ENV !== 'production') {
+  await adminJs.initialize();
+}
 
 app.use(express.static('public'));
 
