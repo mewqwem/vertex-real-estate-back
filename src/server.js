@@ -7,24 +7,46 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import apartmentsRoutes from './routes/apartmentsRoutes.js';
 import { errors } from 'celebrate';
+import AdminJSExpress from '@adminjs/express';
+import { adminJs } from './admin/admin.js';
 
 const app = express();
+
+const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  adminJs,
+  {
+    authenticate: async (email, password) => {
+      if (email === 'admin@test.com' && password === 'password123') {
+        return { email: 'admin@test.com' };
+      }
+      return null;
+    },
+    cookieName: 'adminjs',
+    cookiePassword: 'some-super-secret-password-used-to-encrypt-cookies',
+  },
+  null,
+  {
+    resave: false,
+    saveUninitialized: true,
+    secret: 'session-secret-key',
+  },
+);
+
+app.use(adminJs.options.rootPath, adminRouter);
 
 app.use(logger);
 app.use(express.json());
 app.use(cors());
-//? middlewares
+
 app.use((req, res, next) => {
   console.log(`Time: ${new Date().toLocaleString()}`);
   next();
 });
 
-//! handlers
 app.use(apartmentsRoutes);
 app.use(notFoundHandler);
 
 app.use(errors());
-
 app.use(errorHandler);
 
 await connectMongoDB();
