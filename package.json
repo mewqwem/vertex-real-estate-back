@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node scripts/build-admin.js",
+    "build": "node src/scripts/build-admin.js",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },

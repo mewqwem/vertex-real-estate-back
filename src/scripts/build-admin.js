@@ -1,4 +1,4 @@
-import { adminJs } from '../src/admin/admin.js';
+import { adminJs } from '../admin/admin.js';
 
 async function runBuild() {
   try {
