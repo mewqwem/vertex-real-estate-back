@@ -12,7 +12,7 @@ import { adminJs } from './admin/admin.js';
 
 const app = express();
 
-await adminJs.initialize();
+app.use(express.static('public'));
 
 const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
   adminJs,
@@ -33,6 +33,8 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     secret: 'session-secret-key',
   },
 );
+
+await adminJs.initialize();
 
 app.use(adminJs.options.rootPath, adminRouter);
 

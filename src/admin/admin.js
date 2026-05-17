@@ -3,7 +3,6 @@ import AdminJS, { ValidationError, ComponentLoader } from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import { Apartment } from '../models/apartments.js';
 import path from 'path';
-import os from 'os';
 import { fileURLToPath } from 'url';
 
 AdminJS.registerAdapter({
@@ -16,6 +15,7 @@ const __dirname = path.dirname(__filename);
 
 const componentLoader = new ComponentLoader();
 
+// Loading our custom address dropdown component
 const AddressAutocompleteComponent = componentLoader.add(
   'AddressAutocomplete',
   path.join(__dirname, './components/AddressAutocomplete.jsx'),
@@ -24,12 +24,6 @@ const AddressAutocompleteComponent = componentLoader.add(
 export const adminJs = new AdminJS({
   componentLoader,
   rootPath: '/admin',
-
-  bundler: {
-    fileCaching: false,
-    dest: path.join(os.tmpdir(), '.adminjs'),
-  },
-
   resources: [
     {
       resource: Apartment,
@@ -95,6 +89,7 @@ export const adminJs = new AdminJS({
             },
           },
 
+          // Attaching our component to the location block
           location: {
             components: {
               edit: AddressAutocompleteComponent,
