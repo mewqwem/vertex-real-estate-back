@@ -15,7 +15,6 @@ const __dirname = path.dirname(__filename);
 
 const componentLoader = new ComponentLoader();
 
-// Loading our custom address dropdown component
 const AddressAutocompleteComponent = componentLoader.add(
   'AddressAutocomplete',
   path.join(__dirname, './components/AddressAutocomplete.jsx'),
@@ -24,9 +23,9 @@ const AddressAutocompleteComponent = componentLoader.add(
 export const adminJs = new AdminJS({
   componentLoader,
   rootPath: '/admin',
-  env: {
-    NODE_ENV: process.env.NODE_ENV || 'development',
-  },
+  /* REMOVED: bundler: { fileCaching: false } is gone.
+     Now AdminJS will natively check if the bundle exists and reuse it without re-writing.
+  */
   resources: [
     {
       resource: Apartment,
@@ -92,7 +91,6 @@ export const adminJs = new AdminJS({
             },
           },
 
-          // Attaching our component to the location block
           location: {
             components: {
               edit: AddressAutocompleteComponent,
