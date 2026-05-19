@@ -2,6 +2,12 @@
 
 Vertex Real Estate Backend is a robust Node.js API that powers the modern real estate search platform. It provides comprehensive endpoints for managing properties, handling data validation, and serving the frontend application.
 
+## Demo
+
+Live: https://vertex-real-estate-back.onrender.com/
+
+Frontend repository: https://github.com/mewqwem/vertex-real-estate
+
 ## Tech Stack
 
 ### Core Technologies
