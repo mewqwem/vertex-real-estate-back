@@ -48,7 +48,7 @@ const AddressAutocomplete = (props) => {
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Почніть вводити адресу (наприклад: Київ, Хрещатик)..."
+        placeholder="Enter address..."
         width={1}
       />
 
