@@ -1,28 +1,16 @@
 // tsx code wrapped in js block as requested
-import AdminJS, { ValidationError, ComponentLoader } from 'adminjs';
+import AdminJS, { ValidationError } from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import { Apartment } from '../models/apartments.js';
 import path from 'path';
 import os from 'os';
-import { fileURLToPath } from 'url';
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
   Database: AdminJSMongoose.Database,
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const componentLoader = new ComponentLoader();
-
-const AddressAutocompleteComponent = componentLoader.add(
-  'AddressAutocomplete',
-  path.join(__dirname, './components/AddressAutocomplete.jsx'),
-);
-
 export const adminJs = new AdminJS({
-  componentLoader,
   rootPath: '/admin',
 
   bundler: {
@@ -95,28 +83,22 @@ export const adminJs = new AdminJS({
             },
           },
 
-          location: {
-            components: {
-              edit: AddressAutocompleteComponent,
-              new: AddressAutocompleteComponent,
-            },
-          },
           'location.lat': {
             isVisible: {
-              list: false,
+              list: true,
               show: true,
-              edit: false,
-              filter: false,
-              new: false,
+              edit: true,
+              filter: true,
+              new: true,
             },
           },
           'location.lng': {
             isVisible: {
-              list: false,
+              list: true,
               show: true,
-              edit: false,
-              filter: false,
-              new: false,
+              edit: true,
+              filter: true,
+              new: true,
             },
           },
         },
