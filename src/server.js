@@ -12,11 +12,16 @@ import { adminJs } from './admin/admin.js';
 
 const app = express();
 
-if (process.env.NODE_ENV !== 'production') {
-  await adminJs.initialize();
-}
+// Health check for Render
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
+});
 
-app.use(express.static('public'));
+app.head('/', (req, res) => {
+  res.sendStatus(200);
+});
+
+await adminJs.initialize();
 
 const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
   adminJs,
@@ -45,14 +50,28 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, res, next) => {
+  console.log(
+    `📍 REQUEST: ${req.method} ${req.path} | URL: ${req.originalUrl}`,
+  );
+  next();
+});
+
+app.use((req, res, next) => {
   console.log(`Time: ${new Date().toLocaleString()}`);
   next();
 });
 
+app.use((req, res, next) => {
+  if (req.path.includes('hotoffers')) {
+    console.log('🔥 HOT OFFERS REQUEST DETECTED');
+  }
+  next();
+});
+
 app.use(apartmentsRoutes);
-app.use(notFoundHandler);
 
 app.use(errors());
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 await connectMongoDB();

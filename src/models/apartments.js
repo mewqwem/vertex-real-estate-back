@@ -83,6 +83,10 @@ const apartmentSchema = new Schema(
         'commercial',
       ],
     },
+    salePrice: {
+      type: Number,
+      default: null,
+    },
   },
   {
     timestamps: true,

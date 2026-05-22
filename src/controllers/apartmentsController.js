@@ -66,6 +66,36 @@ export const getAparmtents = async (req, res) => {
   });
 };
 
+export const getHotOffers = async (req, res, next) => {
+  try {
+    const TARGET_COUNT = 5;
+
+    let hotApartments = await Apartment.find({
+      salePrice: { $ne: null },
+    })
+      .sort({ createdAt: -1 })
+      .limit(TARGET_COUNT);
+
+    const neededCount = TARGET_COUNT - hotApartments.length;
+
+    if (neededCount > 0) {
+      const alreadyIncludedIds = hotApartments.map((apt) => apt._id);
+
+      const regularApartments = await Apartment.find({
+        _id: { $nin: alreadyIncludedIds },
+      })
+        .sort({ createdAt: -1 })
+        .limit(neededCount);
+
+      hotApartments = [...hotApartments, ...regularApartments];
+    }
+
+    res.status(200).json(hotApartments);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getAparmtentById = async (req, res, next) => {
   try {
     const { id } = req.params;
