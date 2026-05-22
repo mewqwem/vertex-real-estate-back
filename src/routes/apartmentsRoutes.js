@@ -4,6 +4,7 @@ import {
   deleteApartment,
   getAparmtentById,
   getAparmtents,
+  getHotOffers,
   updateApartment,
 } from '../controllers/apartmentsController.js';
 import { celebrate } from 'celebrate';
@@ -17,6 +18,8 @@ import {
 const router = Router();
 
 router.get('/apartments', celebrate(getApartmentsSchema), getAparmtents);
+
+router.get('/apartments/hotoffers', getHotOffers);
 
 router.get(
   '/apartments/:id',

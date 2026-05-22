@@ -17,11 +17,14 @@ export const getApartmentsSchema = {
     perPage: Joi.number().integer().min(1).max(20).default(10),
     minPrice: Joi.number().min(0).optional(),
     maxPrice: Joi.number().min(0).optional(),
+    salePrice: Joi.number().optional(),
     rooms: Joi.number().integer().positive().max(99).optional(),
     area: Joi.number().positive().optional(),
     location: Joi.string().trim().min(1).optional(),
     dealType: Joi.string().valid('buy', 'rent').optional(),
-    apartmentType: Joi.string().valid(...apartmentTypeValues).optional(),
+    apartmentType: Joi.string()
+      .valid(...apartmentTypeValues)
+      .optional(),
   }).custom((value, helpers) => {
     const { minPrice, maxPrice } = value;
     if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
@@ -66,6 +69,9 @@ export const updateApartmentSchema = {
       .optional(),
     features: Joi.array().items(Joi.string()).optional(),
     status: Joi.string().optional(),
+    salePrice: Joi.number().allow(null).optional().messages({
+      'number.base': 'Sale price must be a number value',
+    }),
   }),
 };
 
@@ -169,6 +175,9 @@ export const createApartmentSchema = {
       'string.base': 'Status must be a text value',
       'string.empty': 'Status cannot be empty',
       'any.required': 'Status is required',
+    }),
+    salePrice: Joi.number().allow(null).optional().messages({
+      'number.base': 'Sale price must be a number value',
     }),
   }),
 };

@@ -1,4 +1,4 @@
-// tsx code wrapped in js block as requested
+// js
 import AdminJS, { ValidationError, ComponentLoader } from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import { Apartment } from '../models/apartments.js';
@@ -38,6 +38,7 @@ export const adminJs = new AdminJS({
         listProperties: [
           'title',
           'price',
+          'salePrice',
           'dealType',
           'apartmentType',
           'status',
@@ -50,9 +51,53 @@ export const adminJs = new AdminJS({
           'status',
           'rooms',
         ],
+        editProperties: [
+          'title',
+          'description',
+          'price',
+          'salePrice',
+          'currency',
+          'dealType',
+          'apartmentType',
+          'rooms',
+          'area',
+          'floor',
+          'totalFloors',
+          'location',
+          'images',
+          'features',
+          'status',
+        ],
+        showProperties: [
+          'title',
+          'description',
+          'price',
+          'salePrice',
+          'currency',
+          'dealType',
+          'apartmentType',
+          'rooms',
+          'area',
+          'floor',
+          'totalFloors',
+          'location',
+          'location.lat',
+          'location.lng',
+          'images',
+          'features',
+          'status',
+          'createdAt',
+          'updatedAt',
+        ],
 
         properties: {
           description: { type: 'richtext' },
+
+          salePrice: {
+            type: 'number',
+            help: 'Enter the sale price if the item is on sale. Leave blank if the price is regular.',
+          },
+
           features: {
             type: 'string',
             isArray: true,
@@ -94,7 +139,6 @@ export const adminJs = new AdminJS({
               new: false,
             },
           },
-
           location: {
             components: {
               edit: AddressAutocompleteComponent,
@@ -126,12 +170,27 @@ export const adminJs = new AdminJS({
             before: async (request) => {
               if (!request.payload) return request;
               const errors = {};
-              if (
-                request.payload.price &&
-                Number(request.payload.price) < 100
-              ) {
+
+              const price = Number(request.payload.price);
+              const salePrice = request.payload.salePrice
+                ? Number(request.payload.salePrice)
+                : null;
+
+              if (request.payload.price && price < 100) {
                 errors.price = { message: 'Price cannot be less than $100' };
               }
+
+              if (salePrice !== null && salePrice !== 0) {
+                if (salePrice >= price) {
+                  errors.salePrice = {
+                    message:
+                      'The sale price must be strictly lower than the regular price.',
+                  };
+                }
+              } else {
+                request.payload.salePrice = null;
+              }
+
               const floor = Number(request.payload.floor);
               const totalFloors = Number(request.payload.totalFloors);
               if (!isNaN(floor) && !isNaN(totalFloors) && totalFloors < floor) {
@@ -149,12 +208,27 @@ export const adminJs = new AdminJS({
             before: async (request) => {
               if (!request.payload) return request;
               const errors = {};
-              if (
-                request.payload.price &&
-                Number(request.payload.price) < 100
-              ) {
+
+              const price = Number(request.payload.price);
+              const salePrice = request.payload.salePrice
+                ? Number(request.payload.salePrice)
+                : null;
+
+              if (request.payload.price && price < 100) {
                 errors.price = { message: 'Price cannot be less than $100' };
               }
+
+              if (salePrice !== null && salePrice !== 0) {
+                if (salePrice >= price) {
+                  errors.salePrice = {
+                    message:
+                      'The sale price must be strictly lower than the regular price.',
+                  };
+                }
+              } else {
+                request.payload.salePrice = null;
+              }
+
               const floor = Number(request.payload.floor);
               const totalFloors = Number(request.payload.totalFloors);
               if (!isNaN(floor) && !isNaN(totalFloors) && totalFloors < floor) {
