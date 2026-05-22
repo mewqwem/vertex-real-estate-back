@@ -138,28 +138,31 @@ export const adminJs = new AdminJS({
               new: false,
             },
           },
-          location: {
-            components: {
-              edit: AddressAutocompleteComponent,
-              new: AddressAutocompleteComponent,
-            },
-          },
+          location:
+            process.env.NODE_ENV === 'production'
+              ? {}
+              : {
+                  components: {
+                    edit: AddressAutocompleteComponent,
+                    new: AddressAutocompleteComponent,
+                  },
+                },
           'location.lat': {
             isVisible: {
               list: false,
               show: true,
-              edit: false,
+              edit: true,
               filter: false,
-              new: false,
+              new: true,
             },
           },
           'location.lng': {
             isVisible: {
               list: false,
               show: true,
-              edit: false,
+              edit: true,
               filter: false,
-              new: false,
+              new: true,
             },
           },
         },
