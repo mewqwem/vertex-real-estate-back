@@ -19,7 +19,7 @@ const router = Router();
 
 router.get('/apartments', celebrate(getApartmentsSchema), getAparmtents);
 
-router.get('/hotoffers', getHotOffers);
+router.get('/apartments/hotoffers', getHotOffers);
 
 router.get(
   '/apartments/:id',
