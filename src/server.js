@@ -41,14 +41,28 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, res, next) => {
+  console.log(
+    `📍 REQUEST: ${req.method} ${req.path} | URL: ${req.originalUrl}`,
+  );
+  next();
+});
+
+app.use((req, res, next) => {
   console.log(`Time: ${new Date().toLocaleString()}`);
   next();
 });
 
+app.use((req, res, next) => {
+  if (req.path.includes('hotoffers')) {
+    console.log('🔥 HOT OFFERS REQUEST DETECTED');
+  }
+  next();
+});
+
 app.use(apartmentsRoutes);
-app.use(notFoundHandler);
 
 app.use(errors());
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 await connectMongoDB();

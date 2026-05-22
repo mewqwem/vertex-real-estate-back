@@ -3,7 +3,6 @@ import AdminJS, { ValidationError, ComponentLoader } from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import { Apartment } from '../models/apartments.js';
 import path from 'path';
-import os from 'os';
 import { fileURLToPath } from 'url';
 
 AdminJS.registerAdapter({
@@ -26,8 +25,8 @@ export const adminJs = new AdminJS({
   rootPath: '/admin',
 
   bundler: {
-    fileCaching: false,
-    dest: path.join(os.tmpdir(), '.adminjs'),
+    fileCaching: process.env.NODE_ENV === 'production' ? true : false,
+    dest: path.join(process.cwd(), '.adminjs'),
   },
 
   resources: [
