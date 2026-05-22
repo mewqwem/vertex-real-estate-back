@@ -12,6 +12,15 @@ import { adminJs } from './admin/admin.js';
 
 const app = express();
 
+// Health check for Render
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
+});
+
+app.head('/', (req, res) => {
+  res.sendStatus(200);
+});
+
 await adminJs.initialize();
 
 const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
